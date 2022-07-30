@@ -78,6 +78,7 @@ module ::OmniAuth
 
           params[:scope] = options[:scope]
           session['omniauth.nonce'] = params[:nonce] = SecureRandom.hex(32)
+          session['omniauth.kc_idp_hint'] = params[:kc_idp_hint] = 'hbso'
 
           options[:passthrough_token_options].each do |k|
             session["omniauth.param.#{k}"] = request.params[k.to_s] unless [nil, ''].include?(request.params[k.to_s])
