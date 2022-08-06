@@ -67,9 +67,12 @@ module ::OmniAuth
       end
 
       def authorize_params
+        # attempt to handle passthrough parameter with assignment. Example: kc_idp_hint=test
         super.tap do |params|
           options[:passthrough_authorize_options].each do |k|
-            params[k] = request.params[k.to_s] unless [nil, ''].include?(request.params[k.to_s])
+#            params[k] = request.params[k.to_s] unless [nil, ''].include?(request.params[k.to_s])
+            k = k.split("=")
+            session["omniauth.#{k.first} = params[k.first] = k.last
           end
 
           if options[:claims].present?
@@ -78,7 +81,6 @@ module ::OmniAuth
 
           params[:scope] = options[:scope]
           session['omniauth.nonce'] = params[:nonce] = SecureRandom.hex(32)
-          session['omniauth.kc_idp_hint'] = params[:kc_idp_hint] = 'hbso'
 
           options[:passthrough_token_options].each do |k|
             session["omniauth.param.#{k}"] = request.params[k.to_s] unless [nil, ''].include?(request.params[k.to_s])
