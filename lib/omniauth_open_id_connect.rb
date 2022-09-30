@@ -72,7 +72,7 @@ module ::OmniAuth
           options[:passthrough_authorize_options].each do |k|
 #            params[k] = request.params[k.to_s] unless [nil, ''].include?(request.params[k.to_s])
             k = k.split("=")
-            session["omniauth.#{k.first} = params[k.first] = k.last
+            session["omniauth.#{k.first}"] = params[k.first] = k.last
           end
 
           if options[:claims].present?
